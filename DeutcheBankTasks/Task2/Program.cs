@@ -11,34 +11,54 @@ namespace Task2
         static void Main(string[] args)
         {
 
-            int[] one = new int[10000];
-            int[] two = new int[one.Length];
-            int[] three = new int[one.Length];
+            List list = new List("1");
+            list.link = new List("2");
+            list.link.link = new List("3");
+            list.link.link.link = new List("4");
 
-            var r = new Random();
-
-            for (int i = 1; i < one.Length; i++)
+            var list2 = list;
+            while (list2 != null)
             {
-                one[i] = r.Next(one[i - 1], one[i - 1] + 100);
-                two[i] = r.Next(two[i - 1], two[i - 1] + 100);
-                three[i] = r.Next(three[i - 1], three[i - 1] + 100);
+                Console.WriteLine(list2.data);
+                list2 = list2.link;
+            }
+            Console.WriteLine("---");
+
+            List prev = null;
+            List cur = list;
+            List next = cur.link;
+            cur.link = null;
+
+            do
+            {
+                prev = cur;
+                cur = next;
+                next = next.link;
+                cur.link = prev;
+            } while (next != null);
+
+
+
+            list2 = cur;
+            while (list2 != null)
+            {
+                Console.WriteLine(list2.data);
+                list2 = list2.link;
             }
 
-
-            int j = 0, k = 0;
-
-            for (int i = 0; i < one.Length; i++)
-            {
-
-                for (; two[j] < one[i] && j<two.Length-1; j++) { }
-                for (; three[k] < one[i] && k < three.Length-1; k++) { }
-
-                if (one[i] == two[j] && two[j] == three[k])
-                    Console.WriteLine(one[i]);
-            }
-
-            Console.ReadKey();
+            Console.ReadLine();
 
         }
+    }
+
+    class List
+    {
+        public List(string data)
+        {
+            this.data = data;
+        }
+
+        public string data;
+        public List link;
     }
 }
